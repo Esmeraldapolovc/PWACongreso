@@ -1,32 +1,30 @@
-# ----------------------------------
-# ETAPA 1: BUILD (Construcción)
-# Usa la imagen SDK para compilar el código.
+# Build stage
+ARG CACHEBUST=1
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-# Establece el directorio de trabajo dentro del contenedor.
+ARG CACHEBUST
+RUN echo "Cache bust: $CACHEBUST"
 WORKDIR /src
 
-# Copia solo el archivo .csproj para restaurar dependencias primero (mejora el cacheo)
-# Si tienes múltiples proyectos, ajusta esto o usa COPY ["*.csproj", "./"]
-COPY ["AppCongreso.csproj", "./"] 
+# Copiar s lo el csproj para aprovechar cache de restore (ruta corregida)
+COPY ["AppCongreso/AppCongreso.csproj", "./"]
 RUN dotnet restore "./AppCongreso.csproj"
 
-# Copia el resto del código fuente
+# Copiar el resto del c digo y publicar
 COPY . .
+RUN dotnet publish "AppCongreso/AppCongreso.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Publica la aplicación, el resultado final va a /app/publish
-# Asegúrate de usar el nombre correcto de tu archivo de proyecto .csproj
-RUN dotnet publish "AppCongreso.csproj" -c Release -o /app/publish --no-restore
-
-# ----------------------------------
-# ETAPA 2: FINAL (Ejecución)
-# Usa la imagen runtime más ligera para la ejecución final.
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
-# El puerto 8080 es el estándar de Docker para .NET, y Render lo manejará.
-ENV ASPNETCORE_URLS=http://+:8080 
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
-# Copia los archivos publicados desde la etapa 'build'
-COPY --from=build /app/publish .
 
-# Define el comando que se ejecuta cuando el contenedor se inicia
-# Reemplaza 'NombreDeTuApp.dll' con el nombre de tu archivo .dll compilado
-ENTRYPOINT ["dotnet", "AppCongreso.dll"]
+# Copiar artefactos publicados
+COPY --from=build /app/publish .
+            
+ENV DOTNET_RUNNING_IN_CONTAINER=true \
+    ASPNETCORE_ENVIRONMENT=Production
+
+# Exponer un puerto por claridad (Render provee PORT)
+EXPOSE 8080
+
+# Usar la variable PORT que Render exporta; por defecto 8080
+ENTRYPOINT ["sh", "-c", "export ASPNETCORE_URLS=http://+:${PORT:-8080} && dotnet AppCongreso.dll"]
