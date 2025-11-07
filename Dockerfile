@@ -7,8 +7,8 @@ WORKDIR /src
 
 # Copia solo el archivo .csproj para restaurar dependencias primero (mejora el cacheo)
 # Si tienes múltiples proyectos, ajusta esto o usa COPY ["*.csproj", "./"]
-COPY AppCongreso.csproj . 
-RUN dotnet restore
+COPY ["AppCongreso.csproj", "./"] 
+RUN dotnet restore "./AppCongreso.csproj"
 
 # Copia el resto del código fuente
 COPY . .
