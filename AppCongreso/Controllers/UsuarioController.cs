@@ -1,4 +1,5 @@
 ﻿using AppCongreso.Data;
+using AppCongreso.Dto;
 using AppCongreso.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,58 @@ namespace AppCongreso.Controllers
         {
             var usuarios = await _context.Usuarios.ToListAsync();
             return Ok(usuarios);
+        }
+
+        [HttpGet("Filtrar")]
+        public async Task<IActionResult> GetUsuariosPorFiltro([FromQuery] filtro f)
+        {
+            var query = _context.Usuarios.AsQueryable();
+
+            if (!string.IsNullOrEmpty(f.Nombre))
+                query = query.Where(u => u.Nombre.Contains(f.Nombre));
+
+            if (!string.IsNullOrEmpty(f.Apellido))
+                query = query.Where(u => u.Apellido.Contains(f.Apellido));
+
+            if (!string.IsNullOrEmpty(f.Email))
+                query = query.Where(u => u.Email.Contains(f.Email));
+
+            if (!string.IsNullOrEmpty(f.Ocupacion))
+                query = query.Where(u => u.Ocupacion.Contains(f.Ocupacion));
+
+            var resultado = await query.ToListAsync();
+
+            return Ok(resultado);
+        }
+
+
+
+        [HttpGet("{id}")]
+         public async Task<IActionResult> GetUsuarioPorId(Guid id)
+        {
+            try
+            {
+                // Busca al usuario en la base de datos según el ID
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+
+                if (usuario == null)
+                {
+                    return NotFound(new
+                    {
+                        mensaje = $"No se encontró ningún usuario con el ID {id}"
+                    });
+                }
+
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    mensaje = "Error al obtener el usuario",
+                    error = ex.Message
+                });
+            }
         }
     }
 }
