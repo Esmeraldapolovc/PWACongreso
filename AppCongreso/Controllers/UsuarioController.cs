@@ -81,7 +81,6 @@ namespace AppCongreso.Controllers
         {
             try
             {
-                // Busca al usuario en la base de datos según el ID
                 var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
 
                 if (usuario == null)
