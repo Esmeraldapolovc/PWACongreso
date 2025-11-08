@@ -47,6 +47,50 @@
           }
         }
       }
+    },
+    "/api/Usuario/Filtrar": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "parameters": [
+          {
+            "name": "Nombre",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Usuario/{id}": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

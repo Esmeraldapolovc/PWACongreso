@@ -60,14 +60,7 @@ namespace AppCongreso.Controllers
             if (!string.IsNullOrEmpty(f.Nombre))
                 query = query.Where(u => u.Nombre.Contains(f.Nombre));
 
-            if (!string.IsNullOrEmpty(f.Apellido))
-                query = query.Where(u => u.Apellido.Contains(f.Apellido));
-
-            if (!string.IsNullOrEmpty(f.Email))
-                query = query.Where(u => u.Email.Contains(f.Email));
-
-            if (!string.IsNullOrEmpty(f.Ocupacion))
-                query = query.Where(u => u.Ocupacion.Contains(f.Ocupacion));
+          
 
             var resultado = await query.ToListAsync();
 

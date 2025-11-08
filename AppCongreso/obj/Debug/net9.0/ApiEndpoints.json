@@ -11,6 +11,38 @@
   },
   {
     "ContainingType": "AppCongreso.Controllers.UsuarioController",
+    "Method": "GetUsuarioPorId",
+    "RelativePath": "api/Usuario/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AppCongreso.Controllers.UsuarioController",
+    "Method": "GetUsuariosPorFiltro",
+    "RelativePath": "api/Usuario/Filtrar",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Nombre",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AppCongreso.Controllers.UsuarioController",
     "Method": "Registro",
     "RelativePath": "api/Usuario/Registro",
     "HttpMethod": "POST",

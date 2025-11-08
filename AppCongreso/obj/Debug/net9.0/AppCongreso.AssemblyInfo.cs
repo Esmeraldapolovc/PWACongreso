@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AppCongreso")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71b20bdcba45866cf1073fcad3302a515f407d88")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7afb648d5431effc2d232203e05a4755527963ca")]
 [assembly: System.Reflection.AssemblyProductAttribute("AppCongreso")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AppCongreso")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
